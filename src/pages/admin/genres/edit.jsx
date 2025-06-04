@@ -1,46 +1,63 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { createGenre } from "../../../_services/genres";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { showGenre, updateGenre } from "../../../_services/genres";
 
-export default function GenreCreate() {
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-  });
+export default function GenreEdit() {
+    const {id} = useParams();
+    const navigate = useNavigate();
+    const [formData, setFormData] = useState({
+        name: "",
+        description: "",
+        _method: "PUT"
+    });
 
-  const navigate = useNavigate();
+    useEffect(() => {
+        const fetchData = async () => {
+            const [genreData] = await Promise.all([
+                showGenre(id)
+            ]);
 
-  const handleChange = (e) => {
-    const { name, value} = e.target;
+            setFormData({
+                name: genreData.name,
+                description: genreData.description,
+                _method: "PUT"
+            })
+        };
 
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
-  };
+        fetchData();
+    }, [id]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+    const handleChange = (e) => {
+            const { name, value} = e.target;
+    
+                setFormData({
+                    ...formData,
+                    [name]: value,
+                });
+        };
+    
+        const handleSubmit = async (e) => {
+            e.preventDefault();
+    
+            try {
+                const payload = new FormData();
+                for (const key in formData) {
+                    payload.append(key, formData[key]);
+                }
+    
+                await updateGenre(id, payload);
+                navigate("/admin/genres");
+            } catch (error) {
+                console.log(error);
+                alert("Error updating genre");
+            }
+        };
 
-    try {
-      const payload = new FormData();
-      for (const key in formData) {
-        payload.append(key, formData[key]);
-      }
-
-      await createGenre(payload);
-      navigate("/admin/genres");
-    } catch (error) {
-      console.log(error);
-      alert("Error creating genre");
-    }
-  };
-
-  return (
+    return (
     <section className="bg-white dark:bg-gray-900">
       <div className="max-w-2xl px-4 py-8 mx-auto lg:py-16">
         <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">
-          Create Genre
+          Edit Genre
         </h2>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
@@ -87,13 +104,7 @@ export default function GenreCreate() {
               type="submit"
               className="text-white bg-indigo-700 hover:bg-indigo-800 focus:ring-4 focus:outline-none focus:ring-indigo-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-indigo-600 dark:hover:bg-indigo-700 dark:focus:ring-indigo-800"
             >
-              Create Genre
-            </button>
-            <button
-              type="reset"
-              className="text-gray-600 inline-flex items-center hover:text-white border border-gray-600 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:border-gray-500 dark:text-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-900"
-            >
-              Reset
+              Save Data
             </button>
           </div>
         </form>

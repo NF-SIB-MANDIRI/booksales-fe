@@ -91,7 +91,7 @@ export default function AdminLayout() {
                   alt="user photo"
                 />
               </button>
-              {/* <!-- Dropdown menu --> */}
+
               <div
                 className="hidden z-50 my-4 w-56 text-base list-none bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600 rounded-xl"
                 id="dropdown"
@@ -121,8 +121,6 @@ export default function AdminLayout() {
             </div>
           </div>
         </nav>
-
-        {/* <!-- Sidebar --> */}
 
         <aside
           className="fixed top-0 left-0 z-40 w-64 h-screen pt-14 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
@@ -211,9 +209,7 @@ export default function AdminLayout() {
                   <span className="ml-3">Genres</span>
                 </Link>
               </li>
-            </ul>
-
-            <ul className="pt-5 mt-5 space-y-2 borderT border-gray-200 dark:border-gray-700">
+              
               <li>
                 <Link to={"/admin/books"}
                   className="flex items-center p-2 text-base font-medium text-gray-900 rounded-lg transition duration-75 hover:bg-gray-100 dark:hover:bg-gray-700 dark:text-white group"

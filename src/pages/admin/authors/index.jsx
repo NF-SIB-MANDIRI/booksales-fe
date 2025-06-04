@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getAuthors } from "../../../_services/authors";
+import { deleteAuthor, getAuthors } from "../../../_services/authors";
 
 export default function AdminAuthors() {
   const [authors, setAuthors] = useState([]);
@@ -19,6 +19,15 @@ export default function AdminAuthors() {
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);
   };
+
+  const handleDelete = async (id) => {
+      const confirmDelete = window.confirm("Are you sure you want to delete?");
+  
+      if (confirmDelete) {
+        await deleteAuthor(id);
+        setAuthors(authors.filter((author) => author.id !== id));
+      }
+    };
 
   return (
     <>
@@ -131,7 +140,7 @@ export default function AdminAuthors() {
                         {openDropdownId === author.id && (
                           <div
                             id="dropdown"
-                            className="absolute roght -0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                            className="absolute right -0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
                             style={{ top: "100%", right: "0" }}
                           >
                             <ul
@@ -148,7 +157,9 @@ export default function AdminAuthors() {
                               </li>
                             </ul>
                             <div className="py-1">
-                              <button className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                              < button 
+                                onClick={() => handleDelete(author.id)}
+                                className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                                 Delete
                               </button>
                             </div>

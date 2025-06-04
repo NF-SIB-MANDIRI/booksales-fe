@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { getGenres } from "../../../_services/genres";
+import { deleteGenre, getGenres } from "../../../_services/genres";
 
 export default function AdminGenres() {
   const [genres, setGenres] = useState([]);
@@ -19,6 +19,15 @@ export default function AdminGenres() {
   const toggleDropdown = (id) => {
     setOpenDropdownId(openDropdownId === id ? null : id);
   };
+
+  const handleDelete = async (id) => {
+      const confirmDelete = window.confirm("Are you sure you want to delete?");
+  
+      if (confirmDelete) {
+        await deleteGenre(id);
+        setGenres(genres.filter((genre) => genre.id !== id));
+      }
+    };
 
   return (
     <>
@@ -127,7 +136,7 @@ export default function AdminGenres() {
                         {openDropdownId === genre.id && (
                           <div
                             id="dropdown"
-                            className="absolute roght -0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
+                            className="absolute right -0 mt-2 z-10 w-44 bg-white rounded divide-y divide-gray-100 shadow dark:bg-gray-700 dark:divide-gray-600"
                             style={{ top: "100%", right: "0" }}
                           >
                             <ul
@@ -144,7 +153,9 @@ export default function AdminGenres() {
                               </li>
                             </ul>
                             <div className="py-1">
-                              <button className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
+                              < button 
+                               onClick={() => handleDelete(genre.id)}
+                               className="block py-2 px-4 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white">
                                 Delete
                               </button>
                             </div>

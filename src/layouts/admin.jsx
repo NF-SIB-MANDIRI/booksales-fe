@@ -1,6 +1,34 @@
-import { Link, Outlet } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import { logout, useDecodeToken } from "../_services/auth";
 
 export default function AdminLayout() {
+  const navigate = useNavigate();
+
+  const token = localStorage.getItem("accesToken");
+  const userInfo = JSON.parse(localStorage.getItem("userInfo"));
+  const decodedData = useDecodeToken(token);
+
+  useEffect(() => {
+    if (!token || !decodedData || !decodedData.success) {
+      navigate("/login");
+      return;
+    }
+
+    const role = userInfo?.role;
+    if (role !== "admin") {
+      navigate("/");
+    }
+  }, [token, decodedData, navigate, userInfo]);
+
+  const handleLogout = async () => {
+    if (token) {
+      await logout({ token });
+      localStorage.removeItem("accesToken");
+      localStorage.removeItem("userInfo");
+      navigate("/login");
+    }
+  };
   return (
     <>
       <div className="antialiased bg-gray-50 dark:bg-gray-900">
@@ -76,7 +104,13 @@ export default function AdminLayout() {
                   ></path>
                 </svg>
               </button>
-
+              
+              <Link
+                    to={""}
+                    className="bg-gray-100 text-black hover:bg-gray-200 focus:ring-4 focus:ring-indigo-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 focus:outline-none"
+                  >
+                    {userInfo.name}
+              </Link>
               <button
                 type="button"
                 className="flex mx-3 text-sm bg-gray-800 rounded-full md:mr-0 focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
@@ -271,6 +305,26 @@ export default function AdminLayout() {
                   <span className="ml-3">Help</span>
                 </Link>
               </li>
+
+              <li>
+                <button
+                  onClick={handleLogout}
+                  className="flex items-center w-full p-2 text-base font-semibold text-red-700 rounded-lg bg-red-50 hover:bg-red-100 dark:bg-red-800 dark:hover:bg-red-700 dark:text-red-100 transition-all duration-300 group"
+                >
+                  <svg
+                    className="w-5 h-5 text-red-700 dark:text-red-100"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a2 2 0 01-2 2H6a2 2 0 01-2-2V7a2 2 0 012-2h5a2 2 0 012 2v1" />
+                  </svg>
+                  <span className="ml-3">Logout</span>
+                </button>
+              </li>
+
             </ul>
           </div>
         </aside>

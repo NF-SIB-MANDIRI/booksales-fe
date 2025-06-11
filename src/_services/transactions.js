@@ -1,13 +1,17 @@
 import { API } from "../_api";
 
-export const getGenres = async () => {
-    const {data} = await API.get("/genres");
+export const getTransactions = async () => {
+    const {data} = await API.get("/transactions",{
+        headers: {
+            "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+        }
+    });
     return data.data
 }
 
-export const createGenre = async (data) => {
+export const createTransaction = async (data) => {
     try {
-        const response = await API.post("/genres", data,{
+        const response = await API.post("/transactions", data, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
@@ -19,9 +23,13 @@ export const createGenre = async (data) => {
     }
 }
 
-export const showGenre = async (id) => {
+export const showTransaction = async (id) => {
     try {
-        const {data} = await API.get(`/genres/${id}`);
+        const {data} = await API.get(`/transactions/${id}`, {
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
+            }
+        });
         return data.data
     } catch (error) {
         console.log(error);
@@ -29,9 +37,9 @@ export const showGenre = async (id) => {
     }
 }
 
-export const updateGenre = async (id, data) => {
+export const updateTransaction = async (id, data) => {
     try {
-        const response = await API.post(`/genres/${id}`, data, {
+        const response = await API.post(`/transactions/${id}`, data, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }
@@ -43,9 +51,9 @@ export const updateGenre = async (id, data) => {
     }
 }
 
-export const deleteGenre = async (id) => {
+export const deleteTransaction = async (id) => {
     try {
-        await API.delete(`/genres/${id}`, {
+        await API.delete(`/transactions/${id}`,{
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem("accessToken")}`
             }

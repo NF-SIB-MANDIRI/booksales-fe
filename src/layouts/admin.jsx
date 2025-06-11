@@ -5,7 +5,7 @@ import { logout, useDecodeToken } from "../_services/auth";
 export default function AdminLayout() {
   const navigate = useNavigate();
 
-  const token = localStorage.getItem("accesToken");
+  const token = localStorage.getItem("accessToken");
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
   const decodedData = useDecodeToken(token);
 
@@ -24,7 +24,7 @@ export default function AdminLayout() {
   const handleLogout = async () => {
     if (token) {
       await logout({ token });
-      localStorage.removeItem("accesToken");
+      localStorage.removeItem("accessToken");
       localStorage.removeItem("userInfo");
       navigate("/login");
     }

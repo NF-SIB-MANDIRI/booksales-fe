@@ -4,7 +4,7 @@ import { login, useDecodeToken } from "../../_services/auth";
 
 export default function Login() {
   const navigate = useNavigate();
-  const [token, setToken] = useState(() => localStorage.getItem("accesToken"));
+  const [token, setToken] = useState(() => localStorage.getItem("accessToken"));
   const decodedData = useDecodeToken(token);
 
   const [formData, setFormData] = useState({
@@ -30,7 +30,7 @@ export default function Login() {
 
     try {
       const response = await login(formData);
-      localStorage.setItem("accesToken", response.token);
+      localStorage.setItem("accessToken", response.token);
       localStorage.setItem("userInfo", JSON.stringify(response.user));
       setToken(response.token); 
 

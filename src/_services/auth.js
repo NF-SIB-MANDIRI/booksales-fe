@@ -23,12 +23,12 @@ export const login = async ({email, password}) => {
 
 export const logout = async ({token}) => {
     try {
-        const {data} = await API.post('/logout', {token}, {
+        const {data} = await API.post('/logout', {}, {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem("accesToken")}`
+                "Authorization": `Bearer ${token}`
             }
         })
-        localStorage.removeItem("accesToken");
+        localStorage.removeItem("accessToken");
         return data
     } catch (error) {
         console.log(error);

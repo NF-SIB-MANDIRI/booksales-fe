@@ -3,17 +3,17 @@ import { logout } from "../_services/auth";
 
 export default function Navbar() {
   const navigate = useNavigate();
-  const token = localStorage.getItem("accesToken");
+  const token = localStorage.getItem("accessToken");
   const userInfo = JSON.parse(localStorage.getItem("userInfo"));
-  
-  const handleLogout = async() => {
-      if (token) {
-        await logout({token});
-        localStorage.removeItem("userInfo");
-      }
-        navigate("/login");
-    };
-  
+
+  const handleLogout = async () => {
+    if (token) {
+      await logout({ token });
+      localStorage.removeItem("userInfo");
+    }
+    navigate("/login");
+  };
+
   return (
     <>
       <header>
@@ -31,7 +31,7 @@ export default function Navbar() {
             </NavLink>
             <div className="flex items-center lg:order-2">
               {token && userInfo ? (
-                <>  
+                <>
                   <NavLink
                     to={"/"}
                     className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
@@ -45,8 +45,8 @@ export default function Navbar() {
                     Logout
                   </button>
                 </>
-              ) :(
-                <>  
+              ) : (
+                <>
                   <NavLink
                     to={"/login"}
                     className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800"
@@ -109,7 +109,7 @@ export default function Navbar() {
                         : "block py-2 pr-4 pl-3 text-gray-700 hover:bg-gray-50 lg:hover:bg-transparent lg:hover:text-indigo-700 lg:p-0 dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white"
                     }
                   >
-                    Buku 
+                    Buku
                   </NavLink>
                 </li>
                 <li>

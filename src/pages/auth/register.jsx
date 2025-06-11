@@ -14,7 +14,7 @@ export default function Register() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem("accesToken");
+    const token = localStorage.getItem("accessToken");
     if (token) {
       navigate("/"); 
     }
